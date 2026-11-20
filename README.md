@@ -7,9 +7,10 @@ When working with agents, you can spend most of your time planning, going in the
 ## Layout to copy into a project
 
 ```
-CLAUDE.md                    # loads the agent rules and glossary (copy from templates/CLAUDE.md)
+AGENTS.md                    # Codex entry point (copy from templates/AGENTS.md)
+CLAUDE.md                    # Claude Code entry point (copy from templates/CLAUDE.md)
 .docs/
-  AGENTS.md                  # rules for agents (copy from this repo)
+  AGENTS.md                  # shared workflow rules (copy this repo's root AGENTS.md)
   glossary.md                # one word per domain idea (start from templates/glossary.md)
   templates/
     slice.md                 # slice template (copy from this repo)
@@ -25,9 +26,12 @@ CLAUDE.md                    # loads the agent rules and glossary (copy from tem
 
 ## Agent setup
 
-Copy `templates/CLAUDE.md` to the project root. Its `@` imports load `.docs/AGENTS.md` and `.docs/glossary.md` into every Claude Code session, and again after the context is summarized, so the agent always has the rules and the terms. Other agents: point their instructions file (e.g. a root `AGENTS.md`) at the same two files.
+Copy the entry point for each agent you use. Both entry points use the same workflow rules and glossary under `.docs/`.
 
-If `.docs/` isn't committed, name the file `CLAUDE.local.md` and add it to `.gitignore`: a committed `CLAUDE.md` would import files other clones don't have.
+- **Codex** loads the root `AGENTS.md` automatically. Copy [`templates/AGENTS.md`](templates/AGENTS.md) to the project root or append its guidance to your existing `AGENTS.md`. It tells Codex to read the shared files before working on specs or slices. [Codex instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md#how-codex-discovers-guidance)
+- **Claude Code** loads the shared files through `@` imports. Copy [`templates/CLAUDE.md`](templates/CLAUDE.md) to the project root or add its imports to your existing `CLAUDE.md`.
+
+If you keep `.docs/` local, put the Claude Code imports in `CLAUDE.local.md` and add that file to `.gitignore`. You can still commit the Codex entry point, which tells Codex to read the shared files when `.docs/` is present.
 
 ## Workflow
 
@@ -40,7 +44,9 @@ If `.docs/` isn't committed, name the file `CLAUDE.local.md` and add it to `.git
 
 ## Files
 
-- `AGENTS.md`: how agents write and implement slices.
+- `AGENTS.md`: shared rules for writing and implementing slices.
+- `CLAUDE.md`: loads this repository's rules in Claude Code.
 - `templates/slice.md`: the slice template.
+- `templates/AGENTS.md`: points Codex to the shared rules and glossary in projects that adopt the workflow.
 - `templates/CLAUDE.md`: imports the agent rules and glossary into every Claude Code session.
 - `templates/glossary.md`: the glossary template. Each term has a meaning, its names in code and the synonyms to avoid.
